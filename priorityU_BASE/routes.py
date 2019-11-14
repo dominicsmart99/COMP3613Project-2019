@@ -3,8 +3,8 @@ from flask import render_template, url_for, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 from priorityU import app, db, login_manager
-from priorityU.models.models import User, Tasks, Courses
-from priorityU.models.forms import LoginForm, RegisterForm
+from priorityU.models.models import User, Task, Course
+from priorityU.models.forms import LoginForm, RegisterForm, NewCourseForm
 
 
 @login_manager.user_loader
@@ -60,6 +60,17 @@ def dashboard():
 @login_required
 def courses():
     return render_template('courses.html', name=current_user.username)
+
+@app.route('/dashboard/courses/add', methods=['GET', 'POST'])
+@login_required
+def addCourse():
+    form = NewCourseForm()
+    if form.validate_on_submit():
+        course = Course(course_code=form.code.data, course_name=form.title.data, lecturer=form.lecturer.data, location=form.location.data, user_id=current_user.get_id())
+        db.session.add(course)
+        db.session.commit()
+        return redirect(url_for('courses'))
+    return render_template('addCourse.html', form=form)
 
 @app.route('/dashboard/completed')
 @login_required

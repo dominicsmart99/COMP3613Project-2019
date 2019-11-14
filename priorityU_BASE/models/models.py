@@ -12,8 +12,8 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String, nullable=False)
     last_task_id = db.Column(db.Integer)
     university = db.Column(db.String, nullable=False)
-    tasks = db.relationship('Tasks', backref='poster')
-    courses = db.relationship('Courses', backref='poster')
+    courses = db.relationship('Course', backref='poster')
+    tasks = db.relationship('Task', backref='poster')
 
     def __init__(self, username=None, email=None, password=None, university=None):
         self.username = username
@@ -25,12 +25,12 @@ class User(UserMixin, db.Model):
         return '<User %r>' %(self.name)
 
 
-class Tasks(db.Model):
+class Task(db.Model):
     __tablename__ = 'tasks'
 
     task_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    due_date = db.Column(db.String, nullable=False) # remember to change to false #remember to change
+    due_date = db.Column(db.String, nullable=False) # remember to change to false
     priority = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -41,12 +41,11 @@ class Tasks(db.Model):
         self.priority = priority
         self.user_id = user_id
         self.status = status
-    
+
     def __repr__(self):
         return '<name %r>' % (self.body)
 
-
-class Courses(db.Model):
+class Course(db.Model):
     __tablename__ = 'courses'
 
     c_id = db.Column(db.Integer, primary_key=True)
@@ -56,9 +55,9 @@ class Courses(db.Model):
     location = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, course_code=None,course_name=None,lecturer=None,location=None,user_id=None):
-        self.course_code=course_code
-        self.course_name=course_name
-        self.lecturer=lecturer
-        self.location=location
-        self.user_id=user_id
+    def __init__(self, course_code=None, course_name=None, lecturer=None, location=None, user_id=None):
+        self.course_code = course_code
+        self.course_name = course_name
+        self.lecturer = lecturer
+        self.location = location
+        self.user_id = user_id

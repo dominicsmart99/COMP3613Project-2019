@@ -14,13 +14,15 @@ class RegisterForm(FlaskForm):
     university = StringField('university', validators=[InputRequired(), Length(min=4,max=70)])
 
 class NewCourseForm(FlaskForm):
-    code = StringField('code', validators=[InputRequired(), Length(min=8, max=8, "Course Code Invalid")])
-    title = StringField('title', validators=[InputRequired(), Length(min=4, max=50, "Course Title Invalid")])
+    code = StringField('Course Code', validators=[InputRequired(), Length(min=8, max=8, message="Course Code Invalid")])
+    title = StringField('Course Title', validators=[InputRequired(), Length(min=4, max=50, message="Course Title Invalid")])
+    lecturer = StringField('Lecturer', validators=[InputRequired(), Length(min=2, max=50, message="Lecturer Name Invalid")])
+    location = StringField('Location', validators=[InputRequired(), Length(min=2, max=20, message="Location Invalid")])
 
 class AddClassForm(FlaskForm):
     classTime = TimeField('classTime')
-    lecturer = StringField('lecturer', validators=[Length(min=0, max=50, "Lecturer Name Invalid")])
-    classType = StringField('classType', validators=[InputRequired(), Length(min=3, max=20, "Class Type Invalid")])
+    lecturer = StringField('lecturer', validators=[Length(min=0, max=50, message="Lecturer Name Invalid")])
+    classType = StringField('classType', validators=[InputRequired(), Length(min=3, max=20, message="Class Type Invalid")])
 
 
 
